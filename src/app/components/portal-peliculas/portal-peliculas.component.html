@@ -1,0 +1,34 @@
+<div class="row gx-3 m-0 px-3">
+    <!-- Sección de películas -->
+    <section class="col col-12 col-md-8 my-4 my-md-5">
+        <div class="p-2 p-md-3 border bg-light rounded">
+            <div class="text-center">
+                <h2 class="text-decoration-underline mt-1 mb-4 mt-md-2 mb-md-5">Portal de películas</h2>
+            </div>
+            <div class="row row-cols-1 row-cols-sm-3 g-1 g-md-3">
+                <div class="col" *ngFor="let p of peliculas">
+                    <div class="card h-100 bg-dark text-white">
+                        <img src="{{p.poster}}" class="card-img-top" alt="{{p.title}}" title="{{p.title}}">
+                        <div class="card-body">
+                            <h5 class="card-title text-center text-capitalize">{{p.title}}</h5>
+                            <p class="card-text fw-light fs-6">
+                                {{p.plot}}
+                            </p>
+                        </div>
+                        <div class="card-footer text-end text-muted">
+                            <p class="mb-1">Año: <small class="fw-bolder">{{p.year}}</small></p>
+                            <p class="mb-1">Duración: <small class="fw-bolder">{{p.length}}</small></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sección de anuncios -->
+    <section class="col col-12 col-md-4 mb-4 my-md-5">
+        <aside class="p-3 border bg-light rounded">
+            <img *ngFor="let a of anuncios" src="../../../assets/img/anuncios/{{a.img}}" class="card-img-top" alt="{{a.title}}">
+        </aside>
+    </section>
+</div>

@@ -1,0 +1,113 @@
+<div class="row m-0">
+    <div class="col-12 col-sm-8 mx-auto my-4 my-md-5 p-0">
+        <section class="p-2 p-md-3 border bg-light rounded shadow">
+            <div class="text-center text-uppercase text-decoration-underline my-4 my-sm-2">
+                <h2 class="m-0">Estadísticas COVID</h2>
+            </div>
+            <form action="" class="p-2 p-md-3 mt-3 mt-sm-5" #searchCountryForm="ngForm">
+
+                <!-- Selección de país -->
+                <div class="row mx-0">
+                    <div class="col-12 col-sm-3 d-flex align-items-center">
+                        <label class="" for="pais">Seleccione un país:</label>
+                    </div>
+                    <div class="col-12 col-sm-9">
+                        <select class="form-select" id="pais" name="pais" [(ngModel)]="country" required #pais="ngModel">
+                            <option value="All">Todos</option>
+                            <option *ngFor="let i of namePaises" value="{{i}}">{{i}}</option>
+                        </select>
+                    </div>
+                </div>
+                
+
+                <div *ngIf="pais.pristine && pais.touched" class="alert alert-danger text-center mt-3">
+                    Parece que no ha seleccionado un país
+                </div>
+
+                <!-- Radio Buttoms -->
+                <div class="row my-4 my-sm-5 mx-0">
+                    <div class="form-check my-2 col-12 col-sm-4">
+                        <input class="form-check-input" type="checkbox" value="true" name="casos-confirmados" 
+                        id="casos-confirmados" checked [(ngModel)]="selected.confirmed" #confirmed="ngModel">
+                        <label class="form-check-label" for="casos-confirmados">
+                            Casos confirmados
+                        </label>
+                    </div>
+                    <div class="form-check my-2 col-12 col-sm-4">
+                        <input class="form-check-input" type="checkbox" value="true" name="casos-curados" 
+                        id="casos-curados" checked [(ngModel)]="selected.recovered">
+                        <label class="form-check-label" for="casos-curados">
+                            Casos curados
+                        </label>
+                    </div>
+                    <div class="form-check my-2 col-12 col-sm-4">
+                        <input class="form-check-input" type="checkbox" value="true" name="casos-fallecidos" 
+                        id="casos-fallecidos" [checked]="selected.deaths" [(ngModel)]="selected.deaths">
+                        <label class="form-check-label" for="casos-fallecidos">
+                            Casos fallecidos
+                        </label>
+                    </div>
+                </div>
+
+                <div *ngIf="!selected.deaths && !selected.recovered && !selected.confirmed" class="alert alert-danger text-center mt-3">
+                    Debe seleccionar al menos una opción
+                </div>
+
+                <!-- Botón de Consulta -->
+                <div class="my-3 my-sm-4">
+                    <button class="btn btn-primary btn-lg w-100 text-uppercase" type="submit" (click)="searchCountry()"
+                        [disabled]="searchCountryForm.invalid"
+                    >
+                        Consultar
+                    </button>
+                </div>
+            </form>
+
+            <!--
+            <p>{{searchCountryForm.status}}</p>
+            <p>{{confirmed.touched}}</p>
+            <p>{{selected | json}}</p>
+            -->
+
+            <div *ngIf="paises.length == 1" class="p-2 p-md-3">
+                <div class="row mb-4">
+                    <h3 class="text-center">Resultados encontrados</h3>
+                </div>
+                <div class="row g-0  rounded border-orange">
+                    <div class="col-12 col-sm-6 text-white bg-orange p-3 d-flex align-items-center justify-content-center">
+                        <h1 class="fs-1 fw-light">{{paises[0].country}}</h1>
+                    </div>
+                    <div class="col-12 col-sm-6 p-3 fs-4 fw-light bg-white">
+                        <p *ngIf="selection.confirmed">Casos confirmados: <span class="text-primary fw-bolder">{{paises[0].cases.total}}</span> </p>
+                        <p *ngIf="selection.recovered">Casos recuperados: <span class="text-success fw-bolder">{{paises[0].cases.recovered}}</span></p>
+                        <p class="mb-auto" *ngIf="selection.deaths">Casos fallecidos: <span class="text-danger fw-bolder">{{paises[0].deaths.total}}</span></p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tabla con resultados -->
+            <div *ngIf="paises.length != 1" class="table-responsive p-2 p-md-3">
+                <table class="table table-hover table-sm table-borderless">
+                    <thead class="table-dark text-center">
+                        <tr>
+                            <th class="fw-normal w-25" scope="col">Ubicación</th>
+                            <th class="fw-normal" scope="col">Confirmados</th>
+                            <th class="fw-normal" scope="col">Curados</th>
+                            <th class="fw-normal" scope="col">Fallecidos</th>
+                            <th class="fw-normal" scope="col">Casos por 1mill. de personas</th>
+                        </tr>
+                    </thead>
+                    <tbody class="fw-light bg-white" *ngFor="let p of paises">
+                        <tr class="text-center">
+                            <td>{{p.country}}</td>
+                            <td>{{p.cases.total}}</td>
+                            <td>{{p.cases.recovered}}</td>
+                            <td>{{p.deaths.total}}</td>
+                            <td>{{p.cases['1M_pop']}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </div>
+</div>

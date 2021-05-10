@@ -1,0 +1,102 @@
+<div class="row my-5 mx-0">
+    <section class="col-12 col-sm-11 m-auto p-3 bg-light border border-secondary rounded shadow">
+
+        <div class="row m-auto">
+
+            <div class="table-responsive col-12 col-sm-8">
+                <h5 class="text-center m-0 py-3 rounded">Cotización de divisas</h5>
+                <table class="table table-hover table-sm caption-top p-0">
+                    <thead class="text-center m-0">
+                        <tr>
+                            <th class="fw-normal" scope="col"></th>
+                            <th class="fw-normal" scope="col">EUR</th>
+                            <th class="fw-normal" scope="col">USD</th>
+                            <th class="fw-normal" scope="col">ARS</th>
+                        </tr>
+                    </thead>
+                    <tbody class="fw-light text-center">
+                        <tr>
+                            <th scope="row" class="fw-normal"> 1 EUR</th>
+                            <td> 1.000000 </td>
+                            <td> {{convertArray[0].result}} </td>
+                            <td> {{convertArray[1].result}} </td>
+                        </tr>
+                        <tr>
+                            <th scope="row" class="fw-normal"> 1 USD </th>
+                            <td> {{convertArray[2].result}} </td>
+                            <td> 1.000000 </td>
+                            <td> {{convertArray[3].result}} </td>
+                        </tr>
+                        <tr>
+                            <th scope="row" class="fw-normal"> 1 ARS </th>
+                            <td> {{convertArray[4].result}} </td>
+                            <td> {{convertArray[5].result}} </td>
+                            <td> 1.000000 </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <!--
+                <p>{{convert | json}}</p>
+                <p>{{convertResult | json }}</p>
+
+                <p>{{convertForm.status}}</p>
+                <p>{{cantidad.valid}}</p>
+                <p>{{cantidad.errors | json}}</p> -->
+            </div>
+
+            <form action="" class="col-12 col-sm-4 text-white bg-primary bg-gradient rounded" #convertForm="ngForm">
+
+                <div class="mb-3">
+                    <h4 class="m-0 text-center py-3 text-decoration-underline">Conversor</h4>
+                </div>
+
+                <div class="mb-3">
+                    <label for="cantidad" class="form-label">Cantidad:</label>
+                    <input type="number" class="form-control" id="cantidad" name="cantidad" placeholder="Ej. ##.##" step="0.0000001" min="0" required [(ngModel)]="convert['from-value']" #cantidad="ngModel">
+                </div>
+
+                <div *ngIf="cantidad.invalid && cantidad.touched" class="alert alert-danger text-center">
+                    <div *ngIf="cantidad.errors.required">
+                        Debe introducir una cantidad
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label for="convertir-de">De:</label>
+                    <select class="form-select" name="convertir-de" id="convertir-de" [(ngModel)]="convert['from-type']" #convertirDe="ngModel" required>
+                        <option *ngFor="let d of divisas" value="{{d.code}}">{{d.moneda}}</option>
+                    </select>
+                </div>
+
+                <div *ngIf="convertirDe.pristine && convertirDe.touched" class="alert alert-danger text-center">
+                    Debe seleccionar una moneda de conversión
+                </div>
+                
+                <div class="mb-3">
+                    <label for="convertir-a">A:</label>
+                    <select class="form-select" name="convertir-a" id="convertir-a" [(ngModel)]="convert['to-type']" #convertirA="ngModel" required>
+                        <option *ngFor="let d of divisas" value="{{d.code}}">{{d.moneda}}</option>
+                    </select>
+                </div>
+
+                <div *ngIf="convertirA.pristine && convertirA.touched" class="alert alert-danger text-center">
+                    Debe seleccionar una moneda de conversión
+                </div>
+
+                <div class="mb-3">
+                    <label for="result" class="form-label">Resultado:</label>
+                    <input class="form-control w-100" type="text" name="result" id="result" value="{{convertResult.result | currency}}" disabled>
+                </div>
+
+                <div class="mb-3">
+                    <button class="btn btn-warning w-100 text-uppercase" type="submit" (click)="convertir()" [disabled]="convertForm.form.invalid">
+                        Convertir&nbsp;&nbsp;&nbsp;<i class="bi bi-arrow-right"></i>
+                    </button>
+                </div>
+
+            </form>
+
+        </div>
+
+    </section>
+</div>
